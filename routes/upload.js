@@ -115,7 +115,10 @@ router.all(/^\/Upload$/, async(req, res, next) => {
 					error = err('alert', { code: 'file_not_uploaded' });
 					return response.send(await render(req, '파일 올리기', error + content, {}, _, error, 'upload'));
 				}
-				await curs.execute("insert into files (title, namespace, hash) values (?, ?, ?)", [doc.title, doc.namespace, '']);  // sha224 해시화 필요
+                const crypto = require('crypto');
+                const sha224Hash = crypto.createHash('sha224');
+                // sha224Hash.update(data.file);
+				await curs.execute("insert into files (title, namespace, hash) values (?, ?, ?)", [doc.title, doc.namespace, '']);  // sha224 해시화 필요 sha224Hash
 				return response.redirect('/w/' + totitle(doc.title, doc.namespace));
 			});
 		}).on('error', async e => {

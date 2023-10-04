@@ -19,6 +19,7 @@ const diff = require('./cemerick-jsdifflib.js');
 const cookieParser = require('cookie-parser');
 const child_process = require('child_process');
 const captchapng = require('captchapng');
+const crypto = require('crypto');
 
 function print(x) { console.log(x); }
 function prt(x) { process.stdout.write(x); }
