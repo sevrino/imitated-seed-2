@@ -117,8 +117,11 @@ router.all(/^\/Upload$/, async(req, res, next) => {
 				}
                 const crypto = require('crypto');
                 const sha224Hash = crypto.createHash('sha224');
-                // sha224Hash.update(data.file);
-				await curs.execute("insert into files (title, namespace, hash) values (?, ?, ?)", [doc.title, doc.namespace, '']);  // sha224 해시화 필요 sha224Hash
+                const dataJson = JSON.stringify(data)
+                const parsedJson = JSON.parse(dataJson);
+                const hashedName = sha224Hash.update(parsedJson.file, 'utf-8').digest('hex');
+                console.log(hashedName);
+				await curs.execute("insert into files (title, namespace, hash) values (?, ?, ?)", [doc.title, doc.namespace, hashedName]);  // sha224 해시화 필요 sha224Hash
 				return response.redirect('/w/' + totitle(doc.title, doc.namespace));
 			});
 		}).on('error', async e => {
