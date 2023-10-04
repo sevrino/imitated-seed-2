@@ -122,6 +122,7 @@ router.all(/^\/Upload$/, async(req, res, next) => {
                 const hashedName = sha224Hash.update(parsedJson.file, 'utf-8').digest('hex');
                 console.log(hashedName);
 				await curs.execute("insert into files (title, namespace, hash) values (?, ?, ?)", [doc.title, doc.namespace, hashedName]);  // sha224 해시화 필요 sha224Hash
+                await curs.execute("update documents set time = ? where title = ? and namespace = ?", [getTime(), doc.title, doc.namespace]);
 				return response.redirect('/w/' + totitle(doc.title, doc.namespace));
 			});
 		}).on('error', async e => {
