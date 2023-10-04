@@ -45,9 +45,10 @@ const server = http.createServer((req, res) => {
         fs.writeFileSync(filePath, decodedFile);
 
         // 클라이언트에 응답 보내기
+        const responseData = { 'file': config.image_host + ':' + config.image_port + '/' + name, 'status': 'success' };
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.write({'file':imgPath});
-        res.end(JSON.stringify({ 'file': imgPath, 'status': 'success' }));
+        res.write(JSON.stringify(responseData));
+        res.end();
       } catch (error) {
         console.error('Error parsing JSON:', error);
         res.writeHead(400, { 'Content-Type': 'application/json' });
